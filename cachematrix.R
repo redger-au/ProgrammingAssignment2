@@ -1,9 +1,10 @@
-## http://adv-r.had.co.nz/Functional-programming.html
 ##
 ## A set of 2 functions to find the inverse of a matrix
 ## INPUT DATA MUST BE AN INVERTIBLE MATRIX (ie. square and orthogonal)
 ##     Note that the functions are optimised for repeated use
 #      the aim is to only invert each matrix once ie. re-use existing data for matrices already processed
+#
+## Refer to http://adv-r.had.co.nz/Functional-programming.html for further explanation
 #
 # ---------------------------------------------- #
 ## makeCacheMatrix creates a cache of already processed matrices - to avoid reprocessing
@@ -11,7 +12,7 @@
 ##      for which the inverse will subsequently be sought
 ##    Obtaining the inverse is NOT usually performed directly by this function
 ##      obtain by calling cacheInv function instead
-makeMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix()) {
     inv <- NULL
     # "set" function ie. set the value for a new matrix
     set <- function(y) {
@@ -32,13 +33,13 @@ makeMatrix <- function(x = matrix()) {
 ## The function to be called by users wishing to calculate the inverse of a matrix
 ##
 ## Prior to calling this function you must have established the basics
-##   Create the necessary global settings by calling makeMatrix with your initial matrix, and "keep" the returned object
-##        eg. mkM <- makeMatrix(matrix(runif(4,2,2)))
+##   Create the necessary global settings by calling makeCacheMatrix with your initial matrix, and "keep" the returned object
+##        eg. mkM <- makeCacheMatrix(matrix(runif(4,2,2)))
 ##   Then call the following to obtain the inverse, passing "mkM" as the parameter
 ##        ie. answer_inv <- cacheInv (mkM)
 ##   Assumes that the initial matrix is square and orhtogonal and thus invertible
 ##
-cacheInv <- function(mkMtrx_in, ...) {
+cacheSolve <- function(mkMtrx_in, ...) {
     ## Return a matrix that is the inverse of 'x'
     inv <- mkMtrx_in$get_inv()
     # If we have already created the invese and saved it, return that
@@ -46,6 +47,7 @@ cacheInv <- function(mkMtrx_in, ...) {
         message("getting cached data")
         return(inv)
     }
+    # Obtain the previously saved matrix value
     data <- mkMtrx_in$get()
     # Create the inverse for a "new" matrix
     inv <- solve(data, ...)
@@ -53,3 +55,12 @@ cacheInv <- function(mkMtrx_in, ...) {
     mkMtrx_in$set_inv(inv)
     inv
 }
+## Following used for intiial testing - delete prior release to "production"
+#t1 <- matrix(runif(4),2,2)
+#mkM <- makeCacheMatrix(t1)
+#t1_inv <- cacheSolve(mkM)
+#cat("original t1 ", t1, " initial inverse calculated ", t1_inv, " claculated inverse ", t1 %*% t1_inv)
+#print ("")
+#t1_inv2 <- cacheSolve(mkM)
+#cat("original t1 ", t1, " Second inverse calculated ", t1_inv2, " claculated inverse ", t1 %*% t1_inv2)
+#print ("")

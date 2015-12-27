@@ -10,7 +10,7 @@
 ##    This function is to be called by the user, passing the original matrix
 ##      for which the inverse will subsequently be sought
 ##    Obtaining the inverse is NOT usually performed directly by this function
-##      call via cacheInv function instead
+##      obtain by calling cacheInv function instead
 makeMatrix <- function(x = matrix()) {
     inv <- NULL
     # "set" function ie. set the value for a new matrix
@@ -34,7 +34,7 @@ makeMatrix <- function(x = matrix()) {
 ## Prior to calling this function you must have established the basics
 ##   Create the necessary global settings by calling makeMatrix with your initial matrix, and "keep" the returned object
 ##        eg. mkM <- makeMatrix(matrix(runif(4,2,2)))
-##   Then call the following to obtain the inverse, passing "mkV" as the parameter
+##   Then call the following to obtain the inverse, passing "mkM" as the parameter
 ##        ie. answer_inv <- cacheInv (mkM)
 ##   Assumes that the initial matrix is square and orhtogonal and thus invertible
 ##
